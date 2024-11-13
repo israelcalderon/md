@@ -12,7 +12,14 @@ def y(m: Fraction, xn: Fraction) -> Fraction:
     return m * (xn + 1)
 
 
-def main(triplet_quatity: int) -> set[tuple[Fraction, ...]]:
+def rational_to_int_triplet(a: Fraction, b: Fraction, c: Fraction) -> tuple[int]:  # noqa: E501
+    """
+    Converts a rational "pythagorean" triplet to a integer pythagorean triplet
+    """
+    return a * a.denominator, b * b.denominator, c * a.denominator
+
+
+def find_tiplet(triplet_quatity: int) -> set[tuple[Fraction, ...]]:
     triplets = set()
 
     while len(triplets) < triplet_quatity:
@@ -21,9 +28,11 @@ def main(triplet_quatity: int) -> set[tuple[Fraction, ...]]:
         xn = x(m)
         yn = y(m, xn)
         zn = xn**2 + yn**2
-        if xn == 0 or yn == 0:
+
+        if xn <= 0 or yn <= 0:
             continue
-        triplets.add((xn, yn, zn))
+
+        triplets.add(rational_to_int_triplet(xn, yn, zn))
 
     return triplets
 
@@ -33,6 +42,7 @@ if __name__ == '__main__':
         user_input = input("Cuantas ternas pitagoricas deseas? ")
     else:
         user_input = sys.argv[1]
-    triplets = main(int(user_input))
-    for xn, yn, zn in triplets:
-        print(f"{xn}, {yn}, {zn}")
+    triplets = find_tiplet(int(user_input))
+
+    for a, b, c in triplets:
+        print(f"{a}, {b}, {c}")
